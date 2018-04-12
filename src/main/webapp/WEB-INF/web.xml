@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+<!--     Spring监听器  -->
+    <listener>  
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+    </listener>  
+   <!--  防止Spring内存溢出监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
+    </listener>
+    <context-param>   
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>classpath:spring-mybatis.xml</param-value>  
+    </context-param>  
+        <!-- Spring MVC servlet -->  
+    <servlet>  
+        <servlet-name>security</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+        <init-param>  
+        <!--  contextConfigLocation配置springmvc加载的配置文件（配置处理器映射器、适配器等等） 如果不配置contextConfigLocation，默认加载的是/WEB-INF/servlet名称-serlvet.xml（springmvc-servlet.xml） -->
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>classpath:spring-mvc.xml</param-value>  
+        </init-param>  
+        <load-on-startup>1</load-on-startup>  
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>security</servlet-name>  
+        <!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->  
+        <url-pattern>/</url-pattern>  
+    </servlet-mapping>  
+    <!-- 编码过滤器 -->  
+    <filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param> 
+            <param-name>forceEncoding</param-name> 
+            <param-value>true</param-value> 
+        </init-param> 
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>  
+	<welcome-file-list>
+	   <welcome-file>/login.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
