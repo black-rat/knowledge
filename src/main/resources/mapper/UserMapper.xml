@@ -12,4 +12,7 @@
   <select id="getUserById" resultMap="resultmap" parameterType="java.lang.Integer" >
 	   select  <include refid="column_List" /> from user where id = #{id,jdbcType=INTEGER}
   </select>
+   <select id="getUserByUserName" resultType="com.bas.bean.User" parameterType="java.lang.String" >
+	   select  * from user t where username = #{username}
+  </select>
 </mapper>

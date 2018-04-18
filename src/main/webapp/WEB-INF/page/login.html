@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <link href="./static/util/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="./static/util/css/bootstrapValidator.css" rel="stylesheet"/>
-	<link rel="stylesheet" href="./static/css/signin.css"  style="text/css" />
+    <link href="${rc.contextPath}/static/util/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${rc.contextPath}/static/util/css/bootstrapValidator.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="${rc.contextPath}/static/css/signin.css"  style="text/css" />
 	<!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" /> -->
-	<script src="./static/util/js/jquery-3.3.1.min.js"></script>
-	<script src="./static/util/js/bootstrap.min.js"></script>
-	<script src="./static/util/js/bootstrapValidator.js"></script>
+	<script src="${rc.contextPath}/static/util/js/jquery-3.3.1.min.js"></script>
+	<script src="${rc.contextPath}/static/util/js/bootstrap.min.js"></script>
+	<script src="${rc.contextPath}/static/util/js/bootstrapValidator.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
 	    $('#loginForm').bootstrapValidator({
@@ -27,9 +27,9 @@
 	                            message: '用户名不能为空！'
 	                        },
 	                        stringLength: {/*长度提示*/
-	                            min: 6,
+	                            min: 5,
 	                            max: 30,
-	                            message: '用户名长度必须在6到30之间'
+	                            message: '用户名长度必须在5到30之间'
 	                        }/*最后一个没有逗号*/
 	                    }
 	                },
@@ -37,6 +37,10 @@
 	                    validators: {
 	                        notEmpty: {
 	                            message: '密码不能为空'
+	                        },
+	                        different: {//不能和用户名相同
+	                            field: 'username',//需要进行比较的input name值
+	                            message: '不能和用户名相同'
 	                        }
 	                    },
 	                },
@@ -46,18 +50,6 @@
 	</script>
 </head>
 <body>
-
-<!-- 	<div class="container">
-		<form class="form-signin">
-			<h2 class="form-signin-heading">欢迎归来</h2>
-			 <input	type="email" id="inputEmail" class="form-control" placeholder="请输入登录名" required autofocus>
-			 <input type="password" id="password" class="form-control" placeholder="请输入登录密码" required />
-			<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-		</form>
-
-	</div> 
-	 autofocus oninvalid="setCustomValidity('请输入您的登录用户名');" oninput="setCustomValidity('');" --> 
-	
 <div id="loginModal" class="modal show">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -66,7 +58,7 @@
         <h1 class="text-center text-primary">登录</h1>
       </div>
       <div class="modal-body">
-        <form action="./login/sign" id="loginForm" class="form col-md-12 center-block">
+        <form action="${rc.contextPath}/login/sign" id="loginForm"  method="POST" class="form col-md-12 center-block">
           <div class="form-group">
             <input type="text"  name="username" class="form-control input-lg" placeholder="请输入登录名" autofocus >
           </div>
