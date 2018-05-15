@@ -155,7 +155,7 @@
     <select id="getAllMenu" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
 	    select 
 	      <include refid="Base_Column_List" />
-	    from menu
+	    from menu t order by  t.pid asc 
   </select>
   <select id="getAllMenuByparentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
 	    select 
