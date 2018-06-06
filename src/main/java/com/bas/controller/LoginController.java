@@ -11,11 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bas.bean.Menu;
 import com.bas.bean.User;
 import com.bas.service.IMenuService;
 import com.bas.service.IUserService;
-import com.bas.util.TreeUtil;
+
 
 @Controller
 @RequestMapping("/login")
@@ -36,7 +37,7 @@ public class LoginController {
 	   User user=userService.getUserByUserName(username);
 	   if(user!=null){
 		   if(password!=null&&password.equals(user.getPassword())){
-			   mav.setViewName("index");
+			   mav.setViewName("main");
 			   mav.addObject(user);
 		   }else{
 			   mav.setViewName("login");
@@ -52,26 +53,20 @@ public class LoginController {
 		
 		return "login";
 	}
-  @RequestMapping("/menu")
+/*  @RequestMapping("/menu")
   public void  getMenu(HttpServletRequest request,HttpServletResponse response) throws Exception{
 	   List<Menu> tree = menuService.getAllMenu();
 	   String json = TreeUtil.getTreeJson(tree);
 	   response.setCharacterEncoding("utf-8");
        response.getWriter().write(json);
        response.getWriter().close();
-   }
-/*private String getSysOrganizeByParentIdJSON(String id){
-      String sonNodes=""; 
-      List<Menu> reslist = menuService.getMenuByParentId(Integer.valueOf(id));
-      for(Menu menu : reslist){
-          sonNodes+="{ text: '"+menu.getName()+"', id: '"+menu.getId()+"'";
-          if(!getSysOrganizeByParentIdJSON(menu.getId().toString()).isEmpty()){
-              sonNodes+= ", nodes: ["+getSysOrganizeByParentIdJSON(menu.getId().toString())+"] ";
-          }
-          sonNodes+= "},";
-      }
-      return sonNodes;
-  }*/
-
-
+   }*/
+    @RequestMapping("/menu")
+    public void getMenu(HttpServletRequest request,HttpServletResponse response) throws Exception{
+  	   List<Menu> tree = menuService.getAllMenu();
+  	   String json = JSONArray.toJSONString(tree);
+	   response.setCharacterEncoding("utf-8");
+       response.getWriter().write(json);
+       response.getWriter().close();
+     }
 }

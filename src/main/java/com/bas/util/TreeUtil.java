@@ -25,10 +25,10 @@ public class TreeUtil {
 		List<String> numlist=new ArrayList<String>();
 		for(Menu vo: menu){
 			param.put(vo.getId().toString(), vo);
-			if(numlist.contains(vo.getPid())){
+			if(numlist.contains(vo.getpId())){
 				continue;
 			}else{
-				numlist.add(vo.getPid());
+				numlist.add(vo.getpId());
 			}
 		}
 		String pid="0";
@@ -45,7 +45,7 @@ public class TreeUtil {
 				 param.remove("1");
 			}else{
 				for(Menu vo: param.values()){
-					pid=vo.getPid();
+					pid=vo.getpId();
 					if(num.equals(pid)){
 						if(sb.indexOf(len)>0){
 							if(flag){

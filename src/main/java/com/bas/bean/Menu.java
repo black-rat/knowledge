@@ -7,11 +7,11 @@ public class Menu {
 
     private String menuNo;
 
-    private String pid;
+    private String pId;
 
     private String url;
 
-    private Integer type;
+    private String open;
 
     private String icon;
 
@@ -20,6 +20,8 @@ public class Menu {
     private String updatetime;
 
     private Integer level;
+
+    private String target;
 
     public Integer getId() {
         return id;
@@ -44,16 +46,15 @@ public class Menu {
     public void setMenuNo(String menuNo) {
         this.menuNo = menuNo == null ? null : menuNo.trim();
     }
+    public String getpId() {
+		return pId;
+	}
 
-    public String getPid() {
-        return pid;
-    }
+	public void setpId(String pId) {
+		this.pId = pId;
+	}
 
-    public void setPid(String pid) {
-        this.pid = pid == null ? null : pid.trim();
-    }
-
-    public String getUrl() {
+	public String getUrl() {
         return url;
     }
 
@@ -61,12 +62,12 @@ public class Menu {
         this.url = url == null ? null : url.trim();
     }
 
-    public Integer getType() {
-        return type;
+    public String getOpen() {
+        return open;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setOpen(String open) {
+        this.open = open == null ? null : open.trim();
     }
 
     public String getIcon() {
@@ -99,5 +100,13 @@ public class Menu {
 
     public void setLevel(Integer level) {
         this.level = level;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target == null ? null : target.trim();
     }
 }

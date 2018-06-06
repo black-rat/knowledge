@@ -19,6 +19,7 @@
         	 var tree =  eval('['+data+']');                
              $('#tree').treeview({
                  data: tree,         // 数据源
+                 backColor:'#F0F8FF',
                  showCheckbox: true,   //是否显示复选框
                  highlightSelected: true,    //是否高亮选中
                  //nodeIcon: 'glyphicon glyphicon-user',    //节点上的图标
@@ -34,9 +35,6 @@
              });
          },
          error: function (XMLHttpRequest, textStatus, errorThrown) {
-        	 alert(XMLHttpRequest.status);
-             alert(XMLHttpRequest.readyState);
-             alert(textStatus);
              alert("树形结构加载失败！")
          }
      });
@@ -44,7 +42,7 @@
 </script>
 </head>
 <body>
-<!--     <div id="wrapper">
+    <!--  <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">首页</a>
@@ -54,7 +52,6 @@
                 <a href="${rc.contextPath}/login/loginout" class="btn btn-danger" title="退出"><i class="fa fa-exclamation-circle fa-2x"></i></a>
             </div>
         </nav>
-        登录信息
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
@@ -71,12 +68,12 @@
                 </ul>
                  
             </div>
-            <div id="tree" class="col-sm-2"></div>
         </nav>
         <div id="page-wrapper">
           
         </div>
-       </div> -->
-       <div id="tree" class="col-sm-2"></div>
+       </div>  -->
+                   <div id="tree" class="col-sm-2"></div>
+       
 </body>
 </html>

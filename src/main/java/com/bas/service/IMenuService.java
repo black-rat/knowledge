@@ -6,12 +6,17 @@ import com.bas.bean.Menu;
 
 public interface IMenuService {
 	
-	public  Menu selectByPrimaryKey(Integer id);
 	
 	public List<Menu> getAllMenu();
 	
-	public Menu getMenuById(Integer id);
 	
 	public List<Menu> getMenuByParentId(Integer id);
 
+	public void insertMenu(Menu vo);
+	/**
+	 * 判断是否存在相同菜单编码
+	 * @param menuNo
+	 * @return
+	 */
+	public boolean isExistMenuNo(String menuNo);
 }

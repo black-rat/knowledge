@@ -5,39 +5,24 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="menu_no" property="menuNo" jdbcType="VARCHAR" />
-    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="pId" property="pId" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="open" property="open" jdbcType="VARCHAR" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
     <result column="createTime" property="createtime" jdbcType="VARCHAR" />
     <result column="updateTime" property="updatetime" jdbcType="VARCHAR" />
     <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="target" property="target" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, name, menu_no, pid, url, type, icon, createTime, updateTime, level
-  </sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from menu
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+  <sql id="Base_Column_List" >
+     id, name, menu_no, pId, url, open, icon, createTime, updateTime, level, target
+  </sql>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from menu
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.bas.bean.Menu" >
-    insert into menu (id, name, menu_no, 
-      pid, url, type, icon, 
-      createTime, updateTime, level
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{menuNo,jdbcType=VARCHAR}, 
-      #{pid,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=VARCHAR}, #{updatetime,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.bas.bean.Menu" >
+  <insert id="insertMenu" parameterType="com.bas.bean.Menu" >
     insert into menu
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -49,14 +34,14 @@
       <if test="menuNo != null" >
         menu_no,
       </if>
-      <if test="pid != null" >
-        pid,
+      <if test="pId != null" >
+        pId,
       </if>
       <if test="url != null" >
         url,
       </if>
-      <if test="type != null" >
-        type,
+      <if test="open != null" >
+        open,
       </if>
       <if test="icon != null" >
         icon,
@@ -70,6 +55,9 @@
       <if test="level != null" >
         level,
       </if>
+      <if test="target != null" >
+        target,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -81,14 +69,14 @@
       <if test="menuNo != null" >
         #{menuNo,jdbcType=VARCHAR},
       </if>
-      <if test="pid != null" >
-        #{pid,jdbcType=VARCHAR},
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
       </if>
       <if test="url != null" >
         #{url,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
+      <if test="open != null" >
+        #{open,jdbcType=VARCHAR},
       </if>
       <if test="icon != null" >
         #{icon,jdbcType=VARCHAR},
@@ -102,9 +90,11 @@
       <if test="level != null" >
         #{level,jdbcType=INTEGER},
       </if>
+      <if test="target != null" >
+        #{target,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-
   <update id="updateByPrimaryKeySelective" parameterType="com.bas.bean.Menu" >
     update menu
     <set >
@@ -114,14 +104,14 @@
       <if test="menuNo != null" >
         menu_no = #{menuNo,jdbcType=VARCHAR},
       </if>
-      <if test="pid != null" >
-        pid = #{pid,jdbcType=VARCHAR},
+      <if test="pId != null" >
+        pId = #{pId,jdbcType=VARCHAR},
       </if>
       <if test="url != null" >
         url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
+      <if test="open != null" >
+        open = #{open,jdbcType=VARCHAR},
       </if>
       <if test="icon != null" >
         icon = #{icon,jdbcType=VARCHAR},
@@ -135,6 +125,9 @@
       <if test="level != null" >
         level = #{level,jdbcType=INTEGER},
       </if>
+      <if test="target != null" >
+        target = #{target,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -142,24 +135,29 @@
     update menu
     set name = #{name,jdbcType=VARCHAR},
       menu_no = #{menuNo,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=VARCHAR},
+      pId = #{pId,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
+      open = #{open,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
       createTime = #{createtime,jdbcType=VARCHAR},
       updateTime = #{updatetime,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER}
+      level = #{level,jdbcType=INTEGER},
+      target = #{target,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!-- 得到所有菜单 -->
+      <!-- 得到所有菜单 -->
     <select id="getAllMenu" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
 	    select 
 	      <include refid="Base_Column_List" />
-	    from menu t order by  t.pid asc 
+	    from menu t order by  t.pId asc 
   </select>
   <select id="getAllMenuByparentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
 	    select 
 	      <include refid="Base_Column_List" />
-	    from menu where pid = #{id,jdbcType=INTEGER}
+	    from menu where pId = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 判断是否存在menoNo -->
+  <select id="isExistMenuNo" resultType="java.lang.Integer"  parameterType="java.lang.String" >
+	    select count(*) from menu where menu_no = #{menu_no,jdbcType=VARCHAR}
   </select>
 </mapper>
