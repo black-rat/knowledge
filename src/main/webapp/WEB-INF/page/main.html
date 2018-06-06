@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>首页</title>
+<script src="${rc.contextPath}/static/util/js/jquery-3.3.1.min.js"></script>
+<link href="${rc.contextPath}/static/util/css/bootstrap.min.css"rel="stylesheet" />
+<link href="${rc.contextPath}/static/util/css/bootstrapZtree.css"	rel="stylesheet" />
+<link href="${rc.contextPath}/static/css/main.css"  rel="stylesheet" />
+<script src="${rc.contextPath}/static/util/js/bootstrap.min.js"></script>
+<script src="${rc.contextPath}/static/util/js/bootstrapValidator.js"></script>
+<script src="${rc.contextPath}/static/util/js/jquery.ztree.core.js"></script>
+<script src="${rc.contextPath}/static/util/js/jquery.ztree.excheck.js"></script>
+<script src="${rc.contextPath}/static/util/js/jquery.ztree.exedit.js"></script>
+<script src="${rc.contextPath}/static/js/main.js"></script>
+<script type="text/javascript">
+
+ var setting = {
+     view: {
+         addHoverDom: addHoverDom,
+         removeHoverDom: removeHoverDom,
+         selectedMulti: false
+     },
+     check: {
+         enable: true
+     },
+     data: {
+         simpleData: {
+             enable: true
+         }
+     },
+     edit: {
+         enable: true,
+     	 drag: {
+			isCopy: false,
+			isMove: true
+		}
+     }
+ };
+ $(function (){
+	  $.ajax({
+	         type: "Post",
+	         url: "${rc.contextPath}/login/menu",
+	         dataType:"json",
+	         success: function (data) {
+	        	 $.fn.zTree.init($("#treeDemo"), setting, data);
+	         },
+	         error: function (XMLHttpRequest, textStatus, errorThrown) {
+	             alert("树形结构加载失败！")
+	         }
+	     });
+ });
+ 
+ function removeHoverDom(treeId, treeNode) {
+	 $.ajax({
+         type: "Post",
+         url: "${rc.contextPath}/menu/delmenu",
+         dataType:"json",
+         data:{'id':treeNode.id},
+         success: function (data) {
+        	 var msg=data.message;
+        	 if(!msg){
+        	     $("#addBtn_"+treeNode.tId).unbind().remove();
+        	 }else{
+        		 alert("删除菜单失败d！");
+        	 }
+         },
+         error: function (XMLHttpRequest, textStatus, errorThrown) {
+             alert("删除菜单失败a！")
+         }
+     });
+ };
+</script>
+</head>
+<body>
+	<div id="header">
+		<h1>知识库系统</h1>
+	</div>
+	<div id="nav" >
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+
+	<div id="section">
+	</div>
+	<div id="footer">Copyright W3School.com.cn</div>
+	<div class="modal fade" id="addmenu" tabindex="-1" role="dialog" aria-labelledby="menutitle">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="menutitle" align="center">新增菜单</h4>
+	      </div>
+				<div class="modal-body">
+					<form id="menuform">
+						<div class="form-group">
+							<input type="text" id="menuname" name="name"  class="form-control input-lg"	placeholder="请输入菜单名称">
+						</div>
+						<div class="form-group">
+							<input type="text" id="menuno" name="menuNo"  class="form-control input-lg" placeholder="请输入菜单编码">
+						</div>
+						<div class="form-group">
+							<input type="text" id="menuurl" name="url"  class="form-control input-lg" placeholder="请输入菜单路径">
+						</div>
+						<div class="form-group">
+							<div class="col-xs-6">
+								<input type="text" id="pid" name="pId"  class="form-control input-lg" readonly placeholder="父节点">
+							</div>
+							<div class="col-xs-6">
+								<input type="text" id="level" name="level" class="form-control input-lg" readonly  placeholder="等级">
+							</div>	
+						</div>
+						<div class="form-group ">
+							<label class="radio-inline" style="margin-top:20px;"> 
+							   <input type="radio" value="true" name="open" >默认展开
+							</label>
+							<label class="radio-inline" style="margin-top:20px;">
+							    <input type="radio"	value="false" name="open" checked >默认关闭
+							</label>
+						</div>
+					</form>
+				</div>
+			<div class="modal-footer">
+	          <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+	          <button type="button" onclick="addMenu()" class="btn btn-primary">保存</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</body>
+</html>

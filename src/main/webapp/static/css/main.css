@@ -1,0 +1,48 @@
+
+html,body {
+    background: #eee url("../img/furley_bg.png") repeat scroll 0 0;
+    margin: 0;
+    padding: 0;
+    height£º100%;
+}
+#header {
+    background-color:#4d0099;
+    color:white;
+    text-align:center;
+    padding:5px;
+    height: 5%;
+}
+#nav {
+    line-height:100%;
+    background-color:#eeeeee;
+    width:20%;
+    height:650px;
+    float:left;
+    padding:5px;
+    overflow:auto;	      
+}
+#section {
+    width:80%;
+    float:left;
+    padding:10px;	 	 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both; 
+    text-align:center;
+    padding:5px;  
+    height: 5%;
+    width: 100%;
+    position: fixed;
+    bottom: 0;	 
+}
+#menu_id{
+	background-color:#d2d2d2;
+	position: fixed;
+    top:100px;
+    height:300px;
+    width: 450px;
+    left:100px;
+}
+
