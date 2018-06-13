@@ -131,20 +131,6 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.bas.bean.Menu" >
-    update menu
-    set name = #{name,jdbcType=VARCHAR},
-      menu_no = #{menuNo,jdbcType=VARCHAR},
-      pId = #{pId,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      open = #{open,jdbcType=VARCHAR},
-      icon = #{icon,jdbcType=VARCHAR},
-      createTime = #{createtime,jdbcType=VARCHAR},
-      updateTime = #{updatetime,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
-      target = #{target,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
       <!-- 得到所有菜单 -->
     <select id="getAllMenu" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
 	    select 
@@ -160,4 +146,13 @@
   <select id="isExistMenuNo" resultType="java.lang.Integer"  parameterType="java.lang.String" >
 	    select count(*) from menu where menu_no = #{menu_no,jdbcType=VARCHAR}
   </select>
+<!--   修改当前节点 -->
+  <update id="updateMenu" parameterType="com.bas.bean.Menu" >
+    update menu
+    set name = #{name,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        open = #{open,jdbcType=VARCHAR},
+        updateTime = #{updatetime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

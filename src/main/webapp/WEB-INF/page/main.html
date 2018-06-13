@@ -12,6 +12,7 @@
 <script src="${rc.contextPath}/static/util/js/jquery.ztree.core.js"></script>
 <script src="${rc.contextPath}/static/util/js/jquery.ztree.excheck.js"></script>
 <script src="${rc.contextPath}/static/util/js/jquery.ztree.exedit.js"></script>
+<script src="${rc.contextPath}/static/util/js/bootbox.js"></script>
 <script src="${rc.contextPath}/static/js/main.js"></script>
 <script type="text/javascript">
 
@@ -35,7 +36,12 @@
 			isCopy: false,
 			isMove: true
 		}
-     }
+     },
+     callback: {
+        beforeEditName: beforeEditName, // 单击修改按钮触发
+        beforeRemove: beforeRemove   //单击删除按钮是触发
+ 		/* onRename: updateTreeNode */
+ 	}
  };
  $(function (){
 	  $.ajax({
@@ -50,26 +56,107 @@
 	         }
 	     });
  });
- 
- function removeHoverDom(treeId, treeNode) {
+ function addHoverDom(treeId, treeNode) {
+     var sObj = $("#" + treeNode.tId + "_span");
+     if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+     var addStr = "<span class='button add' id='addBtn_" + treeNode.tId+ "' title='add node' onfocus='this.blur();'></span>";
+     sObj.after(addStr);
+     var btn = $("#addBtn_"+treeNode.tId);
+
+     if (btn){
+    	 btn.bind("click", function(){
+    		 $('#addmenu').modal('show');
+    		 $('#menuname').val("");
+    		 $('#pid').val(treeNode.id);
+    		 $('#level').val(treeNode.level+1);
+    		 $('#menuno').val(treeNode.menuNo+"_");
+             return false;
+         });
+     }
+ }; 
+function addMenu(){
 	 $.ajax({
          type: "Post",
-         url: "${rc.contextPath}/menu/delmenu",
+         url: "${rc.contextPath}/menu/addmenu",
          dataType:"json",
-         data:{'id':treeNode.id},
+         data:$('#menuform').serialize(),
          success: function (data) {
         	 var msg=data.message;
         	 if(!msg){
-        	     $("#addBtn_"+treeNode.tId).unbind().remove();
+        		 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            	 var tree =  eval(data);   
+                 zTree.addNodes(zTree.getNodeByParam("id",data.pId,null),tree);
+        		 $('#addmenu').modal('hide');
         	 }else{
-        		 alert("删除菜单失败d！");
+        		 alert("添加菜单失败:菜单编码重复！");
+        	 }
+        	
+         },
+         error: function (XMLHttpRequest, textStatus, errorThrown) {
+             alert("树形菜单添加失败！")
+         }
+     });
+	};
+	
+ function removeHoverDom(treeId, treeNode) {
+     $("#addBtn_"+treeNode.tId).unbind().remove();
+ };
+ function beforeEditName(treeId, treeNode) {
+	 $('#updateMenu').modal('show');
+	 $('#uid').val(treeNode.id);
+	 $('#umenuname').val(treeNode.name);
+	 $('#upid').val(treeNode.pId);
+	 $('#ulevel').val(treeNode.level);
+	 $('#umenuno').val(treeNode.menuNo);
+	 if(treeNode.open){
+		 $('#opentrue').attr("checked",true);
+	 }else{
+		 $('#openfalse').attr("checked",true);
+	 }
+	 $('#uopen').val(true);
+	 return false;
+	};
+ function updateMenu(){
+	 $.ajax({
+         type: "Post",
+         url: "${rc.contextPath}/menu/updatemenu",
+         dataType:"json",
+         data:$('#updateMenuform').serialize(),
+         success: function (data) {
+        	 var msg=data.message;
+        	 if(!msg){
+        		 var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            	 var nodes =zTree.getNodeByParam("id",data.id,null)
+            	 nodes.name=data.name;
+            	 nodes.url=data.url
+            	 zTree.updateNode(nodes)
+        		 $('#updateMenu').modal('hide');
+        	 }else{
+        		 alert("执行成功，修改菜单失败！");
         	 }
          },
          error: function (XMLHttpRequest, textStatus, errorThrown) {
-             alert("删除菜单失败a！")
+             alert("删除菜单失败！")
          }
      });
  };
+ function beforeRemove(reeId, treeNode){
+	 bootbox.confirm({ 
+		  message: "是否确认删除该节点！", 
+		  //size：'small',
+		   buttons: {
+		        confirm: {
+		            label: '确认',
+		            className: 'btn-success'
+		        },
+		        cancel: {
+		            label: '取消',
+		            className: 'btn-danger'
+		        }
+		    },
+		  callback: function(result){ /* result is a boolean; true = OK, false = Cancel*/ }
+		})
+ }
 </script>
 </head>
 <body>
@@ -83,6 +170,8 @@
 	<div id="section">
 	</div>
 	<div id="footer">Copyright W3School.com.cn</div>
+	
+<!-- 	新增节点 -->
 	<div class="modal fade" id="addmenu" tabindex="-1" role="dialog" aria-labelledby="menutitle">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -126,5 +215,53 @@
 	    </div>
 	  </div>
 	</div>
+<!-- 	修改节点 -->
+	<div class="modal fade" id="updateMenu" tabindex="-1" role="dialog" aria-labelledby="umenutitle">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="umenutitle" align="center">修改菜单</h4>
+	      </div>
+				<div class="modal-body">
+					<form id="updateMenuform">
+					   <div class="form-group" style="display:none">
+							<input type="text" id="uid" name="id"  class="form-control input-lg">
+						</div>
+						<div class="form-group">
+							<input type="text" id="umenuname" name="name"  class="form-control input-lg"	placeholder="请输入菜单名称">
+						</div>
+						<div class="form-group">
+							<input type="text" id="umenuno" name="menuNo"  class="form-control input-lg" readonly placeholder="请输入菜单编码">
+						</div>
+						<div class="form-group">
+							<input type="text" id="umenuurl" name="url"  class="form-control input-lg" placeholder="请输入菜单路径">
+						</div>
+						<div class="form-group">
+							<div class="col-xs-6">
+								<input type="text" id="upid" name="pId"  class="form-control input-lg" readonly placeholder="父节点">
+							</div>
+							<div class="col-xs-6">
+								<input type="text" id="ulevel" name="level" class="form-control input-lg" readonly  placeholder="等级">
+							</div>	
+						</div>
+						<div class="form-group ">
+							<label class="radio-inline" style="margin-top:20px;"> 
+							   <input id="opentrue"  type="radio" value="true" name="open" >默认展开
+							</label>
+							<label class="radio-inline" style="margin-top:20px;">
+							    <input  id="openfalse" type="radio"	value="false" name="open"  >默认关闭
+							</label>
+						</div>
+					</form>
+				</div>
+			<div class="modal-footer">
+	          <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+	          <button type="button" onclick="updateMenu()" class="btn btn-primary">修改</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 </body>
 </html>

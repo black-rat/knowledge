@@ -21,6 +21,15 @@ public interface MenuMapper {
      * @param vo
      */
     public void insertMenu(Menu vo);
-    
+    /**
+     * 判断节点是否存在
+     * @param menuNo
+     * @return
+     */
     public Integer isExistMenuNo(String menuNo);
+    /**
+     * 修改当前节点
+     * @param vo
+     */
+    public void updateMenu(Menu vo);
 }

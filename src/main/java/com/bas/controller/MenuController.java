@@ -1,26 +1,16 @@
 package com.bas.controller;
-
-import java.util.List;
-
 import javax.annotation.Resource;
-import javax.json.JsonString;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONCreator;
 import com.bas.bean.Menu;
-import com.bas.bean.User;
 import com.bas.service.IMenuService;
 import com.bas.service.IUserService;
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import com.bas.util.DateUtil;
 
 
 @Controller
@@ -49,7 +39,6 @@ public class MenuController {
 			response.getWriter().write(json);
 			response.getWriter().close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			logger.info("添加失败");
 			e.printStackTrace();
 		}
@@ -71,6 +60,29 @@ public class MenuController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.info("删除失败");
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 修改ztree
+	 * @param vo
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping("/updatemenu")
+	public void updateMenu(Menu vo,HttpServletResponse response)  throws Exception{
+		try {
+			String json="{\"message\":\"true\"}";
+			if(vo!=null){
+				vo.setUpdatetime(DateUtil.getCurrentDateTimeAsString());
+			    menuService.updateMenu(vo);
+				json=JSONObject.toJSONString(vo);
+			}
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().write(json);
+			response.getWriter().close();
+		} catch (Exception e) {
+			logger.info("修改失败");
 			e.printStackTrace();
 		}
 	}

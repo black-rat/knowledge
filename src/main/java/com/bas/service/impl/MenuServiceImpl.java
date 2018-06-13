@@ -37,5 +37,10 @@ public class MenuServiceImpl implements IMenuService {
 		}
 		return false;
 	}
+	@Override
+	public void updateMenu(Menu vo) {
+		// TODO Auto-generated method stub
+		this.menudao.updateMenu(vo);
+	}
 
 }

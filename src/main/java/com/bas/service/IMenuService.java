@@ -19,4 +19,9 @@ public interface IMenuService {
 	 * @return
 	 */
 	public boolean isExistMenuNo(String menuNo);
+	/**
+	 * 修改当前节点
+	 * @param vo
+	 */
+	public void updateMenu(Menu vo);
 }
